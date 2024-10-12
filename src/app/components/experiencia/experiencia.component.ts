@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ExperienciaService } from '../../services/experiencia.service';
-import { Experiencia } from '../../models/experiencia.model';
+import { ExperienciaService } from '../../services/property.service';
+import { Experiencia } from '../../models/property.model';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user.model';
 import { CommonModule } from '@angular/common';

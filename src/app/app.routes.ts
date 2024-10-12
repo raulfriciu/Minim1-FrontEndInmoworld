@@ -7,8 +7,8 @@ import { HomeComponent } from './components/home/home.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, // Redirige a Home por defecto
   { path: 'home', component: HomeComponent },
-  { path: 'usuaris', component: UsuarisComponent },
-  { path: 'experiencia', component: ExperienciaComponent },
+  { path: 'user', component: UsuarisComponent },
+  { path: 'property', component: ExperienciaComponent },
   { path: '**', redirectTo: 'home' } // Redirige cualquier ruta desconocida a Home
 ];
 

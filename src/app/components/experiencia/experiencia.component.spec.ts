@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ExperienciaComponent } from './experiencia.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ExperienciaService } from '../../services/experiencia.service';
+import { ExperienciaService } from '../../services/property.service';
 import { UserService } from '../../services/user.service';
 import { of } from 'rxjs';
 
