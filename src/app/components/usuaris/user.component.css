@@ -11,7 +11,7 @@
 
 /* Estilo del contenedor del formulario */
 .form-container {
-  background-color: #8B0000; /* Rojo vino */
+  background-color: #003366; /* Azul menos oscuro */
   color: #FAF3E0; /* Blanco roto */
   padding: 30px;
   border-radius: 15px;
@@ -21,40 +21,40 @@
 
 /* Título del formulario (h1) */
 .form-container h1 {
-  font-size: 2.2rem; /* Aumentar el tamaño de letra a 2.2rem */
+  font-size: 2.2rem; /* Tamaño de letra 2.2rem */
   color: #FAF3E0; /* Blanco roto */
   margin-bottom: 20px;
 }
 
 /* Título de la lista de usuarios (h2) */
 .lista-usuarios h2 {
-  font-size: 2.2rem; /* Aumentar el tamaño de letra a 2.2rem */
+  font-size: 2.2rem; /* Tamaño de letra 2.2rem */
   color: #FAF3E0; /* Blanco roto */
   margin-bottom: 20px;
 }
 
 /* Estilo general de etiquetas y entradas */
 label {
-  font-size: 1.1rem; /* Aumentar tamaño de letra de las etiquetas */
+  font-size: 1.1rem; /* Tamaño de letra de las etiquetas */
   color: #FAF3E0; /* Blanco roto */
   margin-bottom: 5px;
-  display: block; /* Asegurar que las etiquetas estén en su propia línea */
+  display: block; /* Etiquetas en su propia línea */
 }
 
 /* Campos de texto y área de texto */
 input, textarea {
   padding: 12px;
-  border: 1px solid #4C0000; /* Rojo oscuro */
+  border: 1px solid #003366; /* Azul menos oscuro */
   border-radius: 8px;
   width: 100%;
   margin-bottom: 15px;
-  margin-right: 10px; /* Margen a la derecha para separar del contenedor */
-  box-sizing: border-box; /* Incluir padding y borde dentro del ancho */
+  margin-right: 10px; /* Margen a la derecha */
+  box-sizing: border-box; /* Padding y borde dentro del ancho */
 }
 
 /* Botón del formulario */
 .submit-button {
-  background-color: #4CAF50; /* Verde hoja */
+  background-color: #002244; /* Azul oscuro, mismo de la lista de usuarios */
   color: #FAF3E0;
   padding: 15px;
   border: none;
@@ -65,12 +65,12 @@ input, textarea {
 }
 
 .submit-button:hover {
-  background-color: #388E3C; /* Verde más oscuro */
+  background-color: #001122; /* Azul aún más oscuro en hover */
 }
 
 /* Estilo de la lista de usuarios */
 .lista-usuarios {
-  background-color: #4C0000; /* Rojo oscuro */
+  background-color: #002244; /* Azul oscuro */
   color: #FAF3E0; /* Blanco roto */
   padding: 30px;
   border-radius: 15px;
@@ -80,7 +80,7 @@ input, textarea {
 
 /* Elementos de la lista */
 .lista-usuarios li {
-  background-color: #8B0000; /* Rojo vino */
+  background-color: #003366; /* Azul menos oscuro */
   padding: 15px;
   margin: 10px 0;
   border-radius: 8px;
@@ -91,12 +91,12 @@ input, textarea {
 
 /* Estilo del texto de la información de usuarios */
 .user-info strong {
-  font-size: 1.5rem; /* Aumentar el tamaño de la letra */
+  font-size: 1.5rem; /* Tamaño de letra */
   color: #FAF3E0; /* Blanco roto */
 }
 
 .user-details {
-  font-size: 1.2rem; /* Aumentar el tamaño del texto de los detalles */
+  font-size: 1.2rem; /* Tamaño del texto de los detalles */
 }
 
 .user-details p {
@@ -111,10 +111,10 @@ input, textarea {
 
 /* Botones */
 button {
-  padding: 5px 10px; /* Reducir el tamaño de padding de los botones */
+  padding: 5px 10px; /* Tamaño del padding de los botones */
   border: none;
   border-radius: 5px;
-  font-size: 0.9rem; /* Reducir el tamaño de la letra de los botones */
+  font-size: 0.9rem; /* Tamaño de letra de los botones */
   color: white;
   cursor: pointer;
   margin-left: 10px;
@@ -126,16 +126,16 @@ button.mostrar-detalles {
 }
 
 button.mostrar-detalles:hover {
-  background-color: #66BB6A; /* Más claro al hacer hover */
+  background-color: #66BB6A; /* Más claro en hover */
 }
 
 /* Botón de eliminar (verde oscuro) */
 button.eliminar {
-  background-color: #388E3C; /* Verde más oscuro */
+  background-color: #388E3C; /* Verde oscuro */
 }
 
 button.eliminar:hover {
-  background-color: #2E7D32; /* Más oscuro al hacer hover */
+  background-color: #2E7D32; /* Más oscuro en hover */
 }
 
 /* Botón de modificar (verde caqui) */
@@ -144,14 +144,15 @@ button.modificar {
 }
 
 button.modificar:hover {
-  background-color: #6B8E23; /* Más oscuro al hacer hover */
+  background-color: #6B8E23; /* Más oscuro en hover */
 }
+
 /* Botón de leer más/leer menos igual al de mostrar detalles */
 button.leer-mas {
   background-color: #4CAF50; /* Verde claro */
 }
 
 button.leer-mas:hover {
-  background-color: #66BB6A; /* Más claro al hacer hover */
+  background-color: #66BB6A; /* Más claro en hover */
 }
 

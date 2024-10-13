@@ -3,6 +3,6 @@ export interface IUser {
   name: string;
   email: string;     // Añadir el campo email
   password: string;
-  property?: string[];    // Este campo es la "Biografía"
+  property?: string[];    // Este campo es la "Property"
 }
   

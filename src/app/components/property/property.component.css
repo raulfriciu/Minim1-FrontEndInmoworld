@@ -17,8 +17,8 @@ body {
 }
 
 /* Contenedor del formulario */
-.experiencia-form {
-  background-color: #8B0000; /* Rojo vino para el fondo */
+.property-form {
+  background-color: #003366; /* Azul más claro como el de "Agregar un nuevo usuario" */
   color: white;
   padding: 20px;
   border-radius: 15px;
@@ -64,9 +64,9 @@ input[type="text"]:focus, textarea:focus, select:focus {
   margin-top: -5px;
 }
 
-/* Botón de enviar */
+/* Botón de enviar con el mismo azul de la lista de properties */
 button {
-  background-color: #4CAF50; /* Verde hoja */
+  background-color: #002244; /* Azul oscuro */
   border: none;
   color: white;
   padding: 12px 20px;
@@ -78,12 +78,12 @@ button {
 }
 
 button:hover {
-  background-color: #388E3C; /* Verde más oscuro */
+  background-color: #001122; /* Azul más oscuro en hover */
 }
 
-/* Lista de experiencias */
-.experiencia-list {
-  background-color: #4C0000; /* Rojo oscuro para el fondo */
+/* Lista de properties */
+.property-list {
+  background-color: #002244; /* Azul oscuro para el fondo */
   color: #FAF3E0; /* Blanco roto para el texto */
   padding: 20px;
   border-radius: 15px;
@@ -92,13 +92,13 @@ button:hover {
   width: 50%;
 }
 
-.experiencia-list ul {
+.property-list ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.experiencia-list li {
+.property-list li {
   background-color: #8B0000; /* Rojo vino para cada item */
   padding: 15px;
   border-radius: 10px;
@@ -106,7 +106,7 @@ button:hover {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.experiencia-list h3, .experiencia-list p, .experiencia-list h4 {
+.property-list h3, .property-list p, .property-list h4 {
   margin: 5px 0;
 }
 
@@ -116,3 +116,6 @@ button:hover {
   font-weight: bold;
   margin-top: 10px; /* Ajuste de margen superior */
 }
+
+
+
