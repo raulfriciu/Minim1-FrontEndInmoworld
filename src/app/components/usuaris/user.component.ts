@@ -76,7 +76,7 @@ export class UserComponent implements OnInit {
         console.log('Usuario agregado:', response);
         
         // Agregar el usuario con el _id generado por la API al array de usuarios en el frontend
-        this.users.push({ ...userJSON, _id: response._id });
+        this.users.push({ ...userJSON, _id: response.user._id });
         this.desplegado.push(false); // Añadir un nuevo estado de desplegado
       });
     }

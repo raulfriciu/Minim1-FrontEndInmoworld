@@ -8,7 +8,7 @@ import { IUser } from '../models/user.model';
   providedIn: 'root'
 })
 export class PropertyService {
-  private apiUrl = 'http://localhost:3000/api/property'; 
+  private apiUrl = 'http://localhost:3001/property'; 
 
   constructor(private http: HttpClient) {}
 

@@ -7,7 +7,7 @@ import { IUser } from '../models/user.model';
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = "http://localhost:3000/api/user";  // Usar apiUrl desde environment
+  private apiUrl = "http://localhost:3001/user";  // Usar apiUrl desde environment
 
   constructor(private http: HttpClient) {}
 
@@ -17,9 +17,9 @@ export class UserService {
   }
 
   // Agregar un nuevo usuario
-  addUser(usuario: IUser): Observable<IUser> {
-    return this.http.post<IUser>(this.apiUrl, usuario);
-  }
+  addUser(usuario: IUser): Observable<{ user: IUser }> {
+    return this.http.post<{ user: IUser }>(this.apiUrl, usuario);
+  }  
 
   // Actualizar un usuario existente
   updateUser(usuario: IUser): Observable<IUser> {
