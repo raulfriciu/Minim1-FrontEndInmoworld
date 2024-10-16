@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IUser } from '../models/user.model';
+import { IUser, IUsersResponse } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +11,13 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  // Obtener todos los usuarios
+  /* Obtener todos los usuarios
   getUsers(): Observable<IUser[]> {
-    return this.http.get<IUser[]>(this.apiUrl);
+    return this.http.get<IUser[]>(`${this.apiUrl}/1/6`);
+  }
+  */
+  getUsers(): Observable<IUsersResponse> {
+    return this.http.get<IUsersResponse>(`${this.apiUrl}/1/6`);
   }
 
   // Agregar un nuevo usuario
@@ -22,7 +26,7 @@ export class UserService {
   }  
 
   // Actualizar un usuario existente
-  updateUser(usuario: IUser): Observable<IUser> {
+  updateUser(usuario: IUser): Observable<IUser > {
     return this.http.put<IUser>(`${this.apiUrl}/${usuario._id}`, usuario);
   }
 

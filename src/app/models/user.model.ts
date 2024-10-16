@@ -5,4 +5,8 @@ export interface IUser {
   password: string;
   property?: string[];    // Este campo es la "Property"
 }
-  
+export interface IUsersResponse {
+  users: IUser[]; // Arreglo de usuarios
+  totalPages: number;
+  totalUser: number;
+}

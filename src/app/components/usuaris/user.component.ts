@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';  // Import FormsModule y NgForm para manejar el formulario
-import { IUser } from '../../models/user.model'; // Importar el modelo User desde la subcarpeta services
+import { IUser, IUsersResponse } from '../../models/user.model'; // Importar el modelo User desde la subcarpeta services
 import { UserService } from '../../services/user.service'; // Importar el servicio UserService desde la subcarpeta services
 import { TruncatePipe } from '../../pipes/truncate.pipe';
 import { MaskEmailPipe } from '../../pipes/maskEmail.pipe';
@@ -15,6 +15,7 @@ import { MaskEmailPipe } from '../../pipes/maskEmail.pipe';
   imports: [CommonModule, FormsModule, TruncatePipe, MaskEmailPipe]  // Importar CommonModule y FormsModule
 
 })
+
 export class UserComponent implements OnInit {
   users: IUser[] = []; // Lista de usuarios con tipado User
   desplegado: boolean[] = []; // Controla si el desplegable de cada usuario está abierto o cerrado
@@ -25,6 +26,7 @@ export class UserComponent implements OnInit {
     email: '', // Añadir el campo email
     password: '',
   };
+  
 
   confirmarPassword: string = ''; // Campo para confirmar la contraseña
   userEdicion: IUser | null = null; // Usuario en proceso de edición
@@ -36,10 +38,15 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     // Cargar usuarios desde el UserService
     this.userService.getUsers()
-      .subscribe(data => {
-        this.users = data;
-        this.desplegado = new Array(data.length).fill(false);
-      });
+      .subscribe((data: IUsersResponse) => {
+        this.users = data.users; // Extraer usuarios de la respuesta
+        this.desplegado = new Array(this.users.length).fill(false); // Inicializar el estado desplegado
+        console.log('Usuarios recibidos:', this.users);
+      },
+      (error) => {
+        console.error('Error al obtener los usuarios:', error);
+      }
+    );
   }
 
   // Función para agregar o modificar un usuario

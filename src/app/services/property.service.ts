@@ -18,10 +18,8 @@ export class PropertyService {
   }
 
   // Agregar una nueva al backend
-  addProperty(activityId: string[]): Observable<IProperty> {
-    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    const userId = user._id;
-    return this.http.post<IProperty>(`${this.apiUrl}/${userId}`, activityId);
+  addProperty(Property: IProperty): Observable<IProperty> {
+    return this.http.post<IProperty>(`${this.apiUrl}/${Property.owner}`, Property);
   }
 
   // Actualizar un usuario existente

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PropertyService } from '../../services/property.service';
 import { IProperty } from '../../models/property.model';
 import { UserService } from '../../services/user.service';
-import { IUser } from '../../models/user.model';
+import { IUser, IUsersResponse } from '../../models/user.model';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -54,15 +54,16 @@ export class PropertyComponent implements OnInit {
   // Obtener la lista de usuarios desde la API
   getUsers(): void {
     this.userService.getUsers().subscribe(
-      (data: IUser[]) => {
-        this.users = data;
-        console.log('Usuarios recibidos:', data);
+      (data: IUsersResponse) => { // Asegúrate de usar la nueva interfaz
+        this.users = data.users; // Accede a data.users
+        console.log('Usuarios recibidos:', this.users);
       },
       (error) => {
         console.error('Error al obtener los usuarios:', error);
       }
     );
   }
+
 
   // Obtener el nombre de un usuario dado su ObjectId
   getUserNameById(userId: string): string {
@@ -75,13 +76,13 @@ export class PropertyComponent implements OnInit {
     this.errorMessage = ''; // Limpiar mensajes de error
 
     // Verificar si los campos están vacíos
-    if (!this.newProperty.owner || this.newProperty.address || !this.newProperty.description) {
+    if (!this.newProperty.owner || !this.newProperty.address || !this.newProperty.description) {
       this.errorMessage = 'Todos los campos son obligatorios.';
       return;
     }
 
     // Llamar al servicio para agregar la nueva property
-    this.propertyService.addProperty(this.activityId).subscribe(
+    this.propertyService.addProperty(this.newProperty).subscribe(
       (response) => {
         console.log('Property creada:', response);
         this.getProperties(); // Actualizar la lista de properties después de crear una nueva
