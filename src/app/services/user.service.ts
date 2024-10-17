@@ -12,17 +12,17 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   // Obtener todos los usuarios
-  getUsers(page: Number, limit: Number): Observable<IUserResponse> {
+  getUsers(page: Number, limit: Number  ): Observable<IUserResponse> {
     return this.http.get<IUserResponse >(`${this.apiUrl}/${page}/${limit}`);
   }
 
   // Agregar un nuevo usuario
-  addUser(usuario: IUser): Observable<IUser> {
-    return this.http.post<IUser>(this.apiUrl, usuario);
-  }
+  addUser(usuario: IUser): Observable<{ user: IUser }> {
+    return this.http.post<{ user: IUser }>(this.apiUrl, usuario);
+  }  
 
   // Actualizar un usuario existente
-  updateUser(usuario: IUser): Observable<IUser> {
+  updateUser(usuario: IUser): Observable<IUser > {
     return this.http.put<IUser>(`${this.apiUrl}/${usuario._id}`, usuario);
   }
 

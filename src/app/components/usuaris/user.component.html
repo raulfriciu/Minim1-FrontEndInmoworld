@@ -96,12 +96,13 @@
           <button (click)="prepararEdicion(user, i)" class="modificar">Modificar</button>
         </div>
 
-        <pagination-controls (pageChange)="handlePageChange($event)" nextLabel="Next" previousLabel="Previous"></pagination-controls>
-
-<div class="mt-3">  Items per Page: <select (change)="handleLimitChange($event)"><option *ngFor="let limitUser of limitUsers" [value]="limitUser">{{ limitUser }}</option>
-  </select>
-</div>
+       
       </li>
     </ul>
+    <pagination-controls (pageChange)="handlePageChange($event)" nextLabel="Next" previousLabel="Previous"></pagination-controls>
+
+    <div class="mt-3">  Items per Page: <select (change)="handleLimitChange($event)"><option *ngFor="let limitUser of limitUsers" [value]="limitUser">{{ limitUser }}</option>
+      </select>
+    </div>
   </div>
 </div>

@@ -4,5 +4,9 @@ export interface IProperty {
   address: string; 
   description?: string; // Descripción de la experiencia
 }
-
+export interface IPropertyResponse {
+  properties: IProperty[]; // Arreglo de propiedades
+  totalPages: number;
+  totalProperty: number;
+}
   

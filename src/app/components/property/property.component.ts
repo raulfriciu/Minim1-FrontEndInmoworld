@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PropertyService } from '../../services/property.service';
-import { IProperty } from '../../models/property.model';
+import { IProperty, IPropertyResponse } from '../../models/property.model';
 import { UserService } from '../../services/user.service';
 import { IUser, IUserResponse } from '../../models/user.model';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { TruncatePipe } from '../../pipes/truncate.pipe';
 
 @Component({
@@ -22,12 +22,16 @@ export class PropertyComponent implements OnInit {
   errorMessage: string = ''; // Variable para mostrar mensajes de error
   activityId: string[] = [];
   @Input() totalUsers:any;
+  @Input() totalProperty:any;
 @Input()currentPage:any;
-@Input()limit:any=2;
+@Input()limit:any=10;
 @Input()total:any;
   @Output()
   pageChange!: EventEmitter<number>;
 totalPages:any;
+desplegado: boolean[] = [];
+
+
 
   // Estructura inicial para una nueva property
   newProperty: IProperty = {
@@ -35,6 +39,10 @@ totalPages:any;
     address: '',
     description: '',
   };
+
+  propertyEdicion: IProperty | null = null; // Usuario en proceso de edición
+  indiceEdicion: number | null = null; // Almacena el índice del usuario en edición
+  formSubmitted: boolean = false; // Indica si se ha enviado el formulario
 
   count:number=0;
   page: number=1 ;
@@ -50,11 +58,12 @@ totalPages:any;
 
   // Obtener la lista de properties desde la API
   getProperties(): void {
-    this.propertyService.getProperty().subscribe(
-      (data: IProperty[]) => {
-        // Filtrar properties que tengan _id definido
-        this.properties = data.filter(exp => exp._id !== undefined);
-        console.log('Properties recibidas:', data);
+    this.propertyService.getProperty(this.page, this.limit).subscribe(
+      (data: IPropertyResponse) => {
+        this.properties = data.properties;          // Lista de usuarios
+        this.totalProperty = data.totalProperty; // Total de usuarios
+        this.totalPages = data.totalPages;
+        console.log('propiedaes del usuario recibidos:', data);
       },
       (error) => {
         console.error('Error al obtener las properties:', error);
@@ -77,6 +86,7 @@ totalPages:any;
     );
   }
 
+
   // Obtener el nombre de un usuario dado su ObjectId
   getUserNameById(userId: string): string {
     const user = this.users.find((u) => u._id === userId);
@@ -84,26 +94,47 @@ totalPages:any;
   }
 
   // Manejar el envío del formulario con validación de campos
-  onSubmit(): void {
+  onSubmit(propertyForm: NgForm): void {
     this.errorMessage = ''; // Limpiar mensajes de error
 
     // Verificar si los campos están vacíos
-    if (!this.newProperty.owner || this.newProperty.address || !this.newProperty.description) {
+    if (!this.newProperty.owner || !this.newProperty.address || !this.newProperty.description) {
       this.errorMessage = 'Todos los campos son obligatorios.';
       return;
     }
+    if (this.indiceEdicion !== null) {
+      this.properties[this.indiceEdicion] = { ...this.newProperty, _id: this.properties[this.indiceEdicion]._id };
+  
+      // Actualizar el usuario en la API
+      this.propertyService.updateProperty(this.properties[this.indiceEdicion]).subscribe(response => {
+        console.log('Usuario actualizado:', response);
+      
+      })
+      // Limpiar el estado de edición
+      this.indiceEdicion = null;
+    }else{
 
-    // Llamar al servicio para agregar la nueva property
-    this.propertyService.addProperty(this.activityId).subscribe(
-      (response) => {
-        console.log('Property creada:', response);
-        this.getProperties(); // Actualizar la lista de properties después de crear una nueva
-        this.resetForm(); // Limpiar el formulario
-      },
-      (error) => {
-        console.error('Error al crear la property:', error);
-      }
-    );
+      // Llamar al servicio para agregar la nueva property
+      this.propertyService.addProperty(this.newProperty).subscribe(
+        (response) => {
+          console.log('Property creada:', response);
+          this.getProperties(); // Actualizar la lista de properties después de crear una nueva
+          this.resetForm(); // Limpiar el formulario
+        },
+        (error) => {
+          console.error('Error al crear la property:', error);
+        }
+      );
+    }
+
+    this.resetForm();
+  }
+
+  prepararEdicion(property: IProperty, index: number): void{
+    this.propertyEdicion = { ...property }; // Clonar el usuario para la edición
+    this.newProperty = { ...property }; // Cargar los datos del usuario en el formulario
+    this.indiceEdicion = index; // Almacenar el índice del usuario en edición
+    this.desplegado[index] = true; // Abrir el desplegable del usuario que se está editando
   }
 
   // Método para eliminar una property por su ID

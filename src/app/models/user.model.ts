@@ -13,4 +13,4 @@ export interface IUserResponse{
   totalPages: number;
 
 }
-  
+

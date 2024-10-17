@@ -1,8 +1,8 @@
 <div class="container">
   <!-- Formulario para crear una nueva property -->
   <div class="property-form">
-    <h2>Crear Nueva Property</h2>
-    <form (ngSubmit)="onSubmit()">
+    <h2>{{ indiceEdicion !== null ? 'Editar propiedad' : 'Agregar una propiedad' }}</h2>
+    <form (ngSubmit)="onSubmit(propertyForm)" #propertyForm="ngForm">
       <div class="form-group">
         <label for="owner">Propietario:</label>
         <select id="owner" [(ngModel)]="newProperty.owner" name="owner" required>
@@ -13,18 +13,19 @@
       </div>
       <div class="form-group">
         <label for="address">Dirección:</label>
-        <select id="address" [(ngModel)]="newProperty.address" name="address" multiple>
-          <option *ngFor="let user of users" [value]="user._id">
-            {{ user.name }}
-          </option>
-        </select>
+        <textarea id="address" [(ngModel)]="newProperty.address" name="address" required maxlength="300"></textarea>
+        <small class="character-limit">Máximo 300 caracteres</small>
       </div>
       <div class="form-group">
         <label for="description">Descripción:</label>
         <textarea id="description" [(ngModel)]="newProperty.description" name="description" required maxlength="300"></textarea>
         <small class="character-limit">Máximo 300 caracteres</small>
       </div>
-      <button type="submit">Enviar</button>
+      <button 
+        type="submit" 
+        class="submit-button">
+        {{ indiceEdicion !== null ? 'Actualizar' : 'Agregar' }}
+      </button>
     </form>
     <!-- Mensaje de error debajo del formulario -->
     <div class="error-message" *ngIf="errorMessage">
@@ -36,13 +37,15 @@
   <div class="property-list">
     <h1>Lista de Properties</h1>
     <ul>
-      <li *ngFor="let property of properties">
+      <li *ngFor="let property of properties; let i = index">
         <h3>Propietario: {{ getUserNameById(property.owner) }}</h3>
         <!-- <p>Descripción: {{ property.description | truncate: 60}}</p> -->
         <p>Dirección: {{ property.address}}</p>
         <p>Descripción: {{ property.description}}</p>
         <!-- Botón para eliminar la property -->
         <button *ngIf="property._id !== undefined" (click)="deleteProperty(property._id)">Eliminar</button>
+        <!-- Botón para modificar una propiedad -->
+        <button (click)="prepararEdicion(property, i)" class="modificar">Modificar</button>
       </li>
     </ul>
   </div>

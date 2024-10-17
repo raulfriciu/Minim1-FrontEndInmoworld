@@ -17,6 +17,7 @@ import { NgxPaginationModule} from 'ngx-pagination';
   imports: [CommonModule, FormsModule, TruncatePipe, MaskEmailPipe, NgxPaginationModule]  // Importar CommonModule y FormsModule
 
 })
+
 export class UserComponent implements OnInit {
   users: IUser[] = []; // Lista de usuarios con tipado User
   desplegado: boolean[] = []; // Controla si el desplegable de cada usuario está abierto o cerrado
@@ -34,6 +35,7 @@ totalPages:any;
     email: '', // Añadir el campo email
     password: '',
   };
+  
 
   count:number=0;
   page: number=1 ;
@@ -106,7 +108,7 @@ totalPages:any;
         console.log('Usuario agregado:', response);
         
         // Agregar el usuario con el _id generado por la API al array de usuarios en el frontend
-        this.users.push({ ...userJSON, _id: response._id });
+        this.users.push({ ...userJSON, _id: response.user._id });
         this.desplegado.push(false); // Añadir un nuevo estado de desplegado
       });
     }
