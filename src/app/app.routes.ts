@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { UserComponent } from './components/usuaris/user.component';
 import { PropertyComponent } from './components/property/property.component';
 import { HomeComponent } from './components/home/home.component';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' }, // Redirige a Home por defecto
@@ -13,7 +14,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { useHash: true })], // Activar el modo hash para evitar problemas con el enrutado
+  imports: [RouterModule.forRoot(routes, { useHash: true }), NgxPaginationModule ], // Activar el modo hash para evitar problemas con el enrutado
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

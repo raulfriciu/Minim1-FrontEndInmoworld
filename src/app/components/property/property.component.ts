@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PropertyService } from '../../services/property.service';
 import { IProperty } from '../../models/property.model';
 import { UserService } from '../../services/user.service';
-import { IUser } from '../../models/user.model';
+import { IUser, IUserResponse } from '../../models/user.model';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
@@ -21,6 +21,13 @@ export class PropertyComponent implements OnInit {
   selectedParticipants: string[] = []; // Participantes seleccionados como ObjectId
   errorMessage: string = ''; // Variable para mostrar mensajes de error
   activityId: string[] = [];
+  @Input() totalUsers:any;
+@Input()currentPage:any;
+@Input()limit:any=2;
+@Input()total:any;
+  @Output()
+  pageChange!: EventEmitter<number>;
+totalPages:any;
 
   // Estructura inicial para una nueva property
   newProperty: IProperty = {
@@ -28,6 +35,10 @@ export class PropertyComponent implements OnInit {
     address: '',
     description: '',
   };
+
+  count:number=0;
+  page: number=1 ;
+  limitUsers = [2,3, 6, 9];
 
   constructor(private propertyService: PropertyService, private userService: UserService) {}
 
@@ -53,9 +64,11 @@ export class PropertyComponent implements OnInit {
 
   // Obtener la lista de usuarios desde la API
   getUsers(): void {
-    this.userService.getUsers().subscribe(
-      (data: IUser[]) => {
-        this.users = data;
+    this.userService.getUsers(this.page, this.limit).subscribe(
+      (data: IUserResponse) => {
+        this.users = data.users;          // Lista de usuarios
+        this.totalUsers = data.totalUsers; // Total de usuarios
+        this.totalPages = data.totalPages;
         console.log('Usuarios recibidos:', data);
       },
       (error) => {

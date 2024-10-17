@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , Output, Input, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';  // Import FormsModule y NgForm para manejar el formulario
-import { IUser } from '../../models/user.model'; // Importar el modelo User desde la subcarpeta services
+import { IUser,IUserResponse } from '../../models/user.model'; // Importar el modelo User desde la subcarpeta services
 import { UserService } from '../../services/user.service'; // Importar el servicio UserService desde la subcarpeta services
 import { TruncatePipe } from '../../pipes/truncate.pipe';
 import { MaskEmailPipe } from '../../pipes/maskEmail.pipe';
+import { NgxPaginationModule} from 'ngx-pagination';
+
 
 
 @Component({
@@ -12,19 +14,30 @@ import { MaskEmailPipe } from '../../pipes/maskEmail.pipe';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css'],
   standalone: true,  // Esto convierte el componente en independiente
-  imports: [CommonModule, FormsModule, TruncatePipe, MaskEmailPipe]  // Importar CommonModule y FormsModule
+  imports: [CommonModule, FormsModule, TruncatePipe, MaskEmailPipe, NgxPaginationModule]  // Importar CommonModule y FormsModule
 
 })
 export class UserComponent implements OnInit {
   users: IUser[] = []; // Lista de usuarios con tipado User
   desplegado: boolean[] = []; // Controla si el desplegable de cada usuario está abierto o cerrado
   mostrarPassword: boolean[] = []; // Array para controlar la visibilidad de la contraseña
+  @Input() totalUsers:any;
+@Input()currentPage:any;
+@Input()limit:any=2;
+@Input()total:any;
+  @Output()
+  pageChange!: EventEmitter<number>;
+totalPages:any;
 
   nuevoUser: IUser = {
     name: '',
     email: '', // Añadir el campo email
     password: '',
   };
+
+  count:number=0;
+  page: number=1 ;
+  limitUsers = [2,3, 6, 9];
 
   confirmarPassword: string = ''; // Campo para confirmar la contraseña
   userEdicion: IUser | null = null; // Usuario en proceso de edición
@@ -35,11 +48,28 @@ export class UserComponent implements OnInit {
 
   ngOnInit(): void {
     // Cargar usuarios desde el UserService
-    this.userService.getUsers()
+    this.userService.getUsers(this.page, this.limit)
       .subscribe(data => {
-        this.users = data;
-        this.desplegado = new Array(data.length).fill(false);
+        this.users = data.users;          // Lista de usuarios
+        this.totalUsers = data.totalUsers; // Total de usuarios
+        this.totalPages = data.totalPages; // Total de páginas
+        this.desplegado = new Array(this.users.length).fill(false);
+      }, error => {
+        console.error('Error al obtener los usuarios', error);
       });
+  }
+
+  handlePageChange(event: number): void {
+    console.log(this.count);
+    this.page = event;
+    console.log(this.page);
+    this.ngOnInit();
+  }
+
+  handleLimitChange(event: any): void {
+    this.limit = event.target.value;
+    this.page = 1;
+    this.ngOnInit();
   }
 
   // Función para agregar o modificar un usuario

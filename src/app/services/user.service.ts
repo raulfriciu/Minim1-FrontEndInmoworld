@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IUser } from '../models/user.model';
+import { IUser, IUserResponse } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = "http://localhost:3000/api/user";  // Usar apiUrl desde environment
+  private apiUrl = "http://localhost:3001/user";  // Usar apiUrl desde environment
 
   constructor(private http: HttpClient) {}
 
   // Obtener todos los usuarios
-  getUsers(): Observable<IUser[]> {
-    return this.http.get<IUser[]>(this.apiUrl);
+  getUsers(page: Number, limit: Number): Observable<IUserResponse> {
+    return this.http.get<IUserResponse >(`${this.apiUrl}/${page}/${limit}`);
   }
 
   // Agregar un nuevo usuario
