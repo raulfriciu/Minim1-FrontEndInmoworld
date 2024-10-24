@@ -7,13 +7,17 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, NgForm } from '@angular/forms';
 import { TruncatePipe } from '../../pipes/truncate.pipe';
+import { NgxPaginationModule} from 'ngx-pagination';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
+
 
 @Component({
   selector: 'app-property',
   templateUrl: './property.component.html',
   standalone: true,
   styleUrls: ['./property.component.css'],
-  imports: [FormsModule, CommonModule, HttpClientModule, TruncatePipe]
+  imports: [FormsModule, CommonModule, HttpClientModule, TruncatePipe, NgxPaginationModule]
 })
 export class PropertyComponent implements OnInit {
   properties: IProperty[] = []; // Lista de properties
@@ -48,7 +52,7 @@ desplegado: boolean[] = [];
   page: number=1 ;
   limitUsers = [2,3, 6, 9];
 
-  constructor(private propertyService: PropertyService, private userService: UserService) {}
+  constructor(private propertyService: PropertyService, private userService: UserService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getProperties(); // Obtener la lista de properties
@@ -139,16 +143,25 @@ desplegado: boolean[] = [];
 
   // Método para eliminar una property por su ID
   deleteProperty(propertyId: string): void {
-    this.propertyService.deleteProperty(propertyId).subscribe(
-      () => {
-        console.log(`Property con ID ${propertyId} eliminada`);
-        this.getProperties(); // Actualizar la lista de properties después de la eliminación
-      },
-      (error) => {
-        console.error('Error al eliminar la property:', error);
-      }
-    );
+    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+      width: '350px',
+      data: { mensaje: `¿Estás seguro de que deseas eliminar la propiedad?` }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) { 
+        this.propertyService.deleteProperty(propertyId).subscribe(
+          () => {
+           console.log(`Property con ID ${propertyId} eliminada`);
+            this.getProperties(); 
+         },
+         (error) => {
+            console.error('Error al eliminar la property:', error);
+         }
+       );
+     }
+   });
   }
+
 
   // Resetear el formulario después de crear una property
   resetForm(): void {
