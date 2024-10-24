@@ -6,6 +6,8 @@ import { UserService } from '../../services/user.service'; // Importar el servic
 import { TruncatePipe } from '../../pipes/truncate.pipe';
 import { MaskEmailPipe } from '../../pipes/maskEmail.pipe';
 import { NgxPaginationModule} from 'ngx-pagination';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component';
 
 
 
@@ -47,7 +49,7 @@ totalPages:any;
   indiceEdicion: number | null = null; // Almacena el índice del usuario en edición
   formSubmitted: boolean = false; // Indica si se ha enviado el formulario
 
-  constructor(private userService: UserService) {}
+  constructor(private dialog: MatDialog, private userService: UserService) {}  
 
   ngOnInit(): void {
     // Cargar usuarios desde el UserService
@@ -148,28 +150,44 @@ totalPages:any;
 
   // Función para eliminar un usuario usando el _id
   eliminarElemento(index: number): void {
+    // Obtener el usuario a eliminar
     const userAEliminar = this.users[index];
   
-    if (!userAEliminar._id) {
+    // Verificar si el usuario y su ID son válidos
+    if (!userAEliminar || typeof userAEliminar._id !== 'string') {
       console.error('El usuario no tiene un _id válido. No se puede eliminar.');
       alert('El usuario no se puede eliminar porque no está registrado en la base de datos.');
       return;
-    }
+    }    
   
-    if (confirm(`¿Estás seguro de que deseas eliminar a ${userAEliminar.name}?`)) {
-      // Eliminar a través del UserService usando el _id como identificador
-      this.userService.deleteUserById(userAEliminar._id).subscribe(
-        response => {
-          console.log('Usuario eliminado:', response);
-          this.users.splice(index, 1);
-          this.desplegado.splice(index, 1);
-        },
-        error => {
-          console.error('Error al eliminar el usuario:', error);
-          alert('Error al eliminar el usuario. Por favor, inténtalo de nuevo.');
+    // Mostrar el diálogo de confirmación
+    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+      width: '350px',
+      data: { mensaje: `¿Estás seguro de que deseas eliminar a ${userAEliminar.name}?` }
+    });
+  
+    // Suscribirse al cierre del diálogo
+    dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          if (userAEliminar && typeof userAEliminar._id === 'string') {
+            this.userService.deleteUserById(userAEliminar._id).subscribe(
+              response => {
+                console.log('Usuario eliminado:', response);
+                this.users.splice(index, 1);
+                this.desplegado.splice(index, 1);
+              },
+              error => {
+                console.error('Error al eliminar el usuario:', error);
+                alert('Error al eliminar el usuario. Por favor, inténtalo de nuevo.');
+              }
+            );
+          } else {
+            console.error('El usuario no tiene un _id válido. No se puede eliminar.');
+            alert('El usuario no se puede eliminar porque no está registrado en la base de datos.');
+          }
         }
-      );
-    }
+      }
+    );
   }
   
 
