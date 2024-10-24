@@ -1,19 +1,20 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PropertyService } from '../../services/property.service';
-import { IProperty, IPropertyResponse } from '../../models/property.model';
+import { IProperty} from '../../models/property.model';
 import { UserService } from '../../services/user.service';
-import { IUser, IUserResponse } from '../../models/user.model';
+import { IUser} from '../../models/user.model';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, NgForm } from '@angular/forms';
 import { TruncatePipe } from '../../pipes/truncate.pipe';
+import { NgxPaginationModule} from 'ngx-pagination';
 
 @Component({
   selector: 'app-property',
   templateUrl: './property.component.html',
   standalone: true,
   styleUrls: ['./property.component.css'],
-  imports: [FormsModule, CommonModule, HttpClientModule, TruncatePipe]
+  imports: [FormsModule, CommonModule, HttpClientModule, TruncatePipe, NgxPaginationModule]
 })
 export class PropertyComponent implements OnInit {
   properties: IProperty[] = []; // Lista de properties
@@ -24,12 +25,15 @@ export class PropertyComponent implements OnInit {
   @Input() totalUsers:any;
   @Input() totalProperty:any;
 @Input()currentPage:any;
-@Input()limit:any=10;
+@Input()limit:any=2;
 @Input()total:any;
+@Input()totally:any=0;
   @Output()
   pageChange!: EventEmitter<number>;
 totalPages:any;
+totalPagesUser:any;
 desplegado: boolean[] = [];
+property:any;
 
 
 
@@ -46,7 +50,9 @@ desplegado: boolean[] = [];
 
   count:number=0;
   page: number=1 ;
-  limitUsers = [2,3, 6, 9];
+  pageUser: number=1 ;
+  limitProperties = [2,3, 6];
+  user:any;
 
   constructor(private propertyService: PropertyService, private userService: UserService) {}
 
@@ -58,32 +64,55 @@ desplegado: boolean[] = [];
 
   // Obtener la lista de properties desde la API
   getProperties(): void {
-    this.propertyService.getProperty(this.page, this.limit).subscribe(
-      (data: IPropertyResponse) => {
-        this.properties = data.properties;          // Lista de usuarios
-        this.totalProperty = data.totalProperty; // Total de usuarios
-        this.totalPages = data.totalPages;
-        console.log('propiedaes del usuario recibidos:', data);
-      },
-      (error) => {
-        console.error('Error al obtener las properties:', error);
-      }
-    );
+    this.propertyService.getProperty(this.page, this.limit).subscribe(properties => {
+        this.property = properties; // Asignar las propiedades
+        this.total = this.property.totalActivity; // Asignar el total de propiedades
+        this.totalPages = this.property.totalPages;
+        this.properties=this.property.properties;
+        console.log('Propiedades del usuario recibidas:',this.property );
+        console.log("paginas propiedades:",this.count,this.page);
+        console.log("Todos las propiedades",this.total,this.property.totalActivity);
+        console.log("estoy dentro properties",this.properties);
+     
+    })
   }
 
   // Obtener la lista de usuarios desde la API
   getUsers(): void {
-    this.userService.getUsers(this.page, this.limit).subscribe(
-      (data: IUserResponse) => {
-        this.users = data.users;          // Lista de usuarios
-        this.totalUsers = data.totalUsers; // Total de usuarios
-        this.totalPages = data.totalPages;
-        console.log('Usuarios recibidos:', data);
-      },
-      (error) => {
-        console.error('Error al obtener los usuarios:', error);
-      }
+    // Call the userService to fetch users
+    this.userService.getUsers(this.pageUser, this.totally).subscribe(users => {
+      console.log("users property",users);
+      console.log("paginas user",this.pageUser);
+        this.user = users;            // Assign the received data to this.user
+        this.totalPages=this.user.totalPages;
+        // this.totally = this.user.totalUser;  // Total number of users
+        this.users=this.user.users;
+        
+        console.log("Todos los usuarios properties",this.total,this.user.totalUsers);
+        console.log("estoy dentro user properties",this.users);
+   
+                // Assign all users to this.users
+            this.desplegado = new Array(this.users.length).fill(false);  // Initialize desplegado
+          }
+          
+        
+      
+      
     );
+  }
+
+  
+  handlePageChange(event: number): void {
+    console.log(this.count);
+    this.page = event;
+    console.log(this.page);
+    this.ngOnInit();
+  }
+
+  handleLimitChange(event: any): void {
+    this.limit = event.target.value;
+    this.page = 1;
+    this.ngOnInit();
   }
 
 
