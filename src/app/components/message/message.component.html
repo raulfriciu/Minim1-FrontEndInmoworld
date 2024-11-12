@@ -1,0 +1,37 @@
+<div class="container">
+    <!-- Formulario para crear un nuevo mensaje -->
+    <div class="message-form">
+      <h2>Agregar un mensaje</h2>
+      <form (ngSubmit)="onSubmit(messageForm)" #messageForm="ngForm">
+        <div class="form-group">
+          <label for="sender">Remitente:</label>
+          <select id="sender" [(ngModel)]="newMessage.sender" name="sender" required>
+            <option *ngFor="let user of users" [value]="user._id">
+              {{ user.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="receiver">Destinatario:</label>
+          <select id="receiver" [(ngModel)]="newMessage.receiver" name="receiver" required>
+            <option *ngFor="let user of users" [value]="user._id">
+              {{ user.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="body_message">Mensaje:</label>
+          <textarea id="body_message" [(ngModel)]="newMessage.body_message" name="body_message" required maxlength="300"></textarea>
+          <small class="character-limit">Máximo 300 caracteres</small>
+        </div>
+        <button 
+          type="submit" 
+          class="submit-button">
+          Agregar
+        </button>
+      </form>
+      <!-- Mensaje de error debajo del formulario -->
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+  
